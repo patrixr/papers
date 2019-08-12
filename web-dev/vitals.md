@@ -12,6 +12,11 @@ I decided to leverage my enthusiasm for Fitbit products with my understanding of
 
 I settled on a VueJS + ExpressJS tech stack for fast prototyping. Details can always be found on my [github](https://github.com/patrixr).
 
+Here's a very basic diagram of the concept
+
+![](https://files.tronica.io/manual-uploads/vitals_diagram.png)
+
+
 ## Using the Fitbit API
 
 Having both a connected scale and wristband, the [Fitbit API](https://dev.fitbit.com/build/reference/web-api/) gives me access to a multitude of data points:

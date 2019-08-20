@@ -1,6 +1,6 @@
 # React: Writing a custom API hook
 
-Let's write a handy custom react hook to take care of the usual API logic we've all written hundreds of time
+Let's write a handy custom react hook to take care of the usual API logic we've all written time and time again.
 
 ## Introduction
 
@@ -23,12 +23,12 @@ Based on the flow described above, it's pretty easy to define the data that we w
 - An error (nulled on success)
 - A retry method
 
-Given that still appreciate delegating the request code to a service class, my thought is to have the hook call the service.
+Given that I still appreciate delegating the request code to a service class, my thought is to have the hook call the service.
 
 Leading to the following usage: 
 
 ```javascript
-const [ users, isLoading, error, retry ] = useAPI('loadUserById', 56);
+const [ user, isLoading, error, retry ] = useAPI('loadUserById', 56);
 ```
 
 
@@ -58,14 +58,14 @@ Our goal here is simply to combine standard react hooks to create all of our req
 
 ### The state
 
-React already provides use with the [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook to create and update state properties.
+React already provides us with the [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook to create and update state properties.
 
 Let's generate our fields :
 
 ```javascript
 function useAPI(method, ...params) { 
 
-  const [data, setData]           = useState([]);
+  const [data, setData]           = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, onError]          = useState(null);
 
@@ -82,7 +82,7 @@ useEffect(() => {
 }, []);
 ```
 
-However, we've decided that the hook would return a `retry` method. So let's move the asynchronous code to it's own function
+However, we've decided that the hook would return a `retry` method. So let's move the asynchronous code to its own function
 
 ```javascript
 const fetchData = async () => {
@@ -96,13 +96,20 @@ Let's now call the correct service method, based on the hook's arguments
 
 ```javascript
 const fetchData = async () => {
+  // Clear previous errors
   onError(null);
+
   try {
+    // Start loading indicator
     setIsLoading(true);
+    
+    // Fetch and set data
     setData(await APIService[method](...params));
   } catch (e) {
+    // Set the error message in case of failure
     setError(e);
   } finally {
+    // Clear loading indicator
     setIsLoading(false);
   }
 };
@@ -118,7 +125,7 @@ And voila ! Our hook is ready for consumption.
 ```javascript
 function useAPI(method, ...params) {
     // ---- State
-    const [data, setData]           = useState([]);
+    const [data, setData]           = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError]         = useState(null);
 
@@ -159,7 +166,7 @@ function HomeScreen() {
     <View>
       <LoadingSpinner loading={isLoading}></LoadingSpinner>
       {
-          users.length > 0 &&
+          (users && users.length > 0) &&
             <UserList users={users}></UserList>
       }
     </View>
@@ -176,7 +183,7 @@ In the past I've often delegated some of that to a `Store`, or used `Mixins` to 
 
 **Custom hooks** give us a whole new flavour and open up new strategies for dealing with problems.
 
-Very excited to witness the evolution of coding practices.
+Happy to witness the evolution of practices.
 
 Cheers,
 

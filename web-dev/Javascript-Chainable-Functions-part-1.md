@@ -1,10 +1,12 @@
-# Javascript: Functional Chains
+# Functional Chains: Implementation
 
 
 Writing a serializable chainable functional API in Javascript.
 
 [![forthebadge](https://forthebadge.com/images/badges/uses-js.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)](https://forthebadge.com)
+
+All of the work below can be found in this [functional chain builder](https://github.com/patrixr/functional-chain). A ready-made and reusable npm module allowing you to generate a small API.
 
 
 ## Introduction
@@ -13,7 +15,7 @@ I've long thought chainable APIs were both elegant and descriptive.
 
 And started playing around with a **functional** and **stateless** implementation, as a fun experiment. 
 
-### Chaining
+### The chain
 
 Here's an example the API I'm thinking of :
 
@@ -45,10 +47,15 @@ analyse(operation);
 ]
 ```
 
-What are the **benefits** :
+What are the **benefits** of serialization :
 
-- **Testing**: Serialization can be beneficial in testing: we can assert the operations are correct. Possibly replacing **end to end** tests with simpler **unit** tests
-- **Networking**: A serialized operation, is one that can be sent **over the wire**, expanding the use cases of the chain.
+#### Testing
+
+Serialization can be beneficial in testing: we can assert the operations are correct. Possibly replacing **end to end** tests with simpler **unit** tests\
+
+#### Networking
+
+A serialized operation, is one that can be sent **over the wire**, expanding the use cases of the chain.
 
 ## Exploiting JavaScript
 
@@ -69,7 +76,7 @@ What does that mean for us:
 
 Closures are simpler to use than they are to explain. But here's what matters to us:
 
-If a **function** creates another function, that new one can access its **creator's scope**. It can in turn create a new function itself, and then again, and again... building a chain.
+If a **function** creates another function, that new one can access its **creator's scope**. It can in turn create a new function itself, and then again, and again... building a **chain**.
 
 ## Implementing the chain
 
@@ -79,7 +86,7 @@ Before we actually write the chain, we need to define our api:
 
 ```javascript
 const API = {
-  add: (val) => {
+  add(val) {
     return num => num + val
   },
 
@@ -120,7 +127,7 @@ At this point, we have **no means of adding** anything to the chain. So let's **
 for (let key in API) {
   const fn = API[key];
   compute[key] = () => {
-     // something
+     ...
   }
 }
 ```
@@ -231,3 +238,15 @@ const operation = multiplyBy(2)
 operation(33); // => 30
 ```
 
+
+## Next Step: Serialization
+
+Thanks for reading through part one of my functional chain article.
+
+In order to keep them short, I will continue the topic of serialization in a separate article.
+
+If anyone has experience building chainable APIs, I would love to hear your approach and use cases.
+
+Cheers,
+
+Patrick
